@@ -20,6 +20,9 @@ void CarSize::RenderSettings() {
     bool enabled = enableCvar.getBoolValue();
     if (ImGui::Checkbox("Enable plugin", &enabled)) {
         enableCvar.setValue(enabled);
+        gameWrapper->Execute([this](GameWrapper* gw) {
+            clickEnable();
+        });
     }
     if (ImGui::IsItemHovered()) {
         ImGui::SetTooltip("Toggle CarSize Plugin");

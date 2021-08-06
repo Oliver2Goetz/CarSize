@@ -18,12 +18,14 @@ public:
 	void AddCar(std::string eventName);
 	
 	bool isEnabled();
-	void changeCarSize();
+	void changeCarSize(bool forceChange = false);
 	float getCarScale();
 
 	const float scale_min = 0.1;
 	const float scale_max = 5.0;
 	const float scale_default = 1.0;
+
+	void clickEnable();
 
 	//Gui function
 	void RenderSettings() override;

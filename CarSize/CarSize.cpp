@@ -34,8 +34,8 @@ void CarSize::AddCar(std::string eventName) {
 	changeCarSize();
 }
 
-void CarSize::changeCarSize() {
-	if (!isEnabled()) { return; }
+void CarSize::changeCarSize(bool forceChange) {
+	if (!isEnabled() && !forceChange) { return; }
 
 	ServerWrapper sw = gameWrapper->GetGameEventAsServer();
 	if (!sw) { return; }
@@ -43,8 +43,6 @@ void CarSize::changeCarSize() {
 	ArrayWrapper<PriWrapper> pris = sw.GetPRIs();
 	for (int i = 0; i < pris.Count(); i++) {
 		PriWrapper priw = pris.Get(i);
-		UnrealStringWrapper sw = priw.GetPlayerName();
-		std::string player_name = sw.ToString();
 
 		CarWrapper car = priw.GetCar();
 		if (!car) { return; }
@@ -55,6 +53,8 @@ void CarSize::changeCarSize() {
 }
 
 float CarSize::getCarScale() {
+	if (!isEnabled()) { return 1.0; };
+
 	CVarWrapper sizeCvar = cvarManager->getCvar("car_size_scale");
 	if (!sizeCvar) { return scale_default; }
 
@@ -66,4 +66,11 @@ bool CarSize::isEnabled() {
 	if (!enableCvar) { return false; }
 
 	return enableCvar.getBoolValue();
+}
+
+/*
+ * This makes sure to reset it back to 1x if disabled.
+ */
+void CarSize::clickEnable() {
+	changeCarSize(true);
 }
