@@ -41,6 +41,19 @@ void CarSize::RenderSettings() {
         ImGui::SetTooltip(hoverText.c_str());
     }
 
+    //TEST MASS SLIDER
+    /*CVarWrapper massCvar = cvarManager->getCvar("car_size_mass");
+    if (!massCvar) { return; }
+
+    float mass = massCvar.getFloatValue();
+    if (ImGui::SliderFloat("Mass (TEST)", &mass, 0, 1000.0)) {
+        massCvar.setValue(mass);
+    }
+    if (ImGui::IsItemHovered()) {
+        std::string hoverText = "Mass is " + std::to_string(mass);
+        ImGui::SetTooltip(hoverText.c_str());
+    }*/
+
     //Apply Button
     if (ImGui::Button("Apply")) {
         gameWrapper->Execute([this](GameWrapper* gw) {

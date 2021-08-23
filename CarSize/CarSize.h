@@ -5,6 +5,8 @@
 #include "bakkesmod/plugin/PluginSettingsWindow.h"
 
 #include "version.h"
+#include <math.h>
+
 constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_PATCH) "." stringify(VERSION_BUILD);
 
 
@@ -20,6 +22,7 @@ public:
 	bool isEnabled();
 	void changeCarSize(bool forceChange = false);
 	float getCarScale();
+	float getMassByCarScale(float car_scale);
 
 	const float scale_min = 0.1;
 	const float scale_max = 5.0;
@@ -31,4 +34,5 @@ public:
 	void RenderSettings() override;
 	std::string GetPluginName() override;
 	void SetImGuiContext(uintptr_t ctx) override;
+
 };
