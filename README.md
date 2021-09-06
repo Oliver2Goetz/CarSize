@@ -38,4 +38,5 @@ For configuration I recommend the following sequense:
 ![carsize_large](https://github.com/Oliver2Goetz/CarSize/blob/master/.github/images/carsize_example_large.png)
 
 ## Community
-If you have any questions feel free to hop onto the [Bakkesmod Programming Discord Server](https://discord.com/invite/HMptXSzCvU)
+If you have any questions feel free to hop onto the [Bakkesmod Programming Discord Server](https://discord.com/invite/HMptXSzCvU) <br>
+Alternatively you can contact me directly through discord using my tag: Oliver#1504
