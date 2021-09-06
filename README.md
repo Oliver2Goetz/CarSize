@@ -11,14 +11,23 @@ CarSize is a Rocket League Plugin which allows you to scale your car in private 
 
 ### Installing the Plugin
 
-Open Bakkesmod ingame via F2 and navigate to the Plugins Tab. Open the Plugin Manager insert the Plugin-ID in the field to the right and click "Install by ID".
+You can download the Plugin from the official Bakkesmod-Plugin Website [here](https://bakkesplugins.com/plugins/view/271)
 
-### Usage and configuration
+### Configuration
 
 The slider lets you set the scaling of the car (default: 1x). By clicking "Apply" the setting will be saved.
-> To avoid weird hitbox behaviour I recommend to use a scale between 0.3 and 2.2 inclusive.
+> To avoid weird hitbox behaviour I recommend to use a scale between 0.8 and 1.5 inclusive.
 
-![configuration](https://github.com/Oliver2Goetz/CarSize/blob/master/.github/images/carsize_configuration.png)
+![configuration](https://github.com/Oliver2Goetz/CarSize/blob/65a9ff75edbe0a508068b86e1b9dc7d7b8645b4d/.github/images/carsize_configuration.png)
+
+For configuration I recommend the following sequense:
+1. Setup sizes and enable for team/s
+2. Players join teams
+3. Pause game with Bakkesmod
+4. Players rejoin their team
+5. Resume -> Scaling of cars are working fine now
+
+> The host has to be on one of the teams - spectating as host does not work currently!
 
 ### Examples
 
