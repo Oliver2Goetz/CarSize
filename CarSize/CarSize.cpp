@@ -10,9 +10,10 @@ void CarSize::onLoad() {
 	_globalCvarManager = cvarManager;
 
 	//Register CVars
-	cvarManager->registerCvar("car_size_enabled", "0", "Enable CarSize", true, true, 0, true, 1);
-	cvarManager->registerCvar("car_size_scale", "1.0", "The scale of the cars (Default: 1x)", true, true, scale_min, true, scale_max);
-	cvarManager->registerCvar("car_size_mass", "1000", "The mass", true, true, 0.0, true, 1000.0);
+	cvarManager->registerCvar("car_size_enabled_blue", "0", "Enable CarSize for blue", true, true, 0, true, 1);
+	cvarManager->registerCvar("car_size_enabled_orange", "0", "Enable CarSize for orange", true, true, 0, true, 1);
+	cvarManager->registerCvar("car_size_scale_blue", "1.0", "The scale of the cars (Default: 1x) for team blue", true, true, SCALE_MIN, true, SCALE_MAX);
+	cvarManager->registerCvar("car_size_scale_orange", "1.0", "The scale of the cars (Default: 1x) for team orange", true, true, SCALE_MIN, true, SCALE_MAX);
 
 	//Register Notifiers
 	cvarManager->registerNotifier("change_car_size", [this](std::vector<std::string> args) {
@@ -36,7 +37,7 @@ void CarSize::AddCar(std::string eventName) {
 }
 
 void CarSize::changeCarSize(bool forceChange) {
-	if (!isEnabled() && !forceChange) { return; }
+	//if (!isEnabled() && !forceChange) { return; }
 
 	ServerWrapper sw = gameWrapper->GetGameEventAsServer();
 	if (!sw) { return; }
@@ -45,29 +46,36 @@ void CarSize::changeCarSize(bool forceChange) {
 	for (int i = 0; i < pris.Count(); i++) {
 		PriWrapper priw = pris.Get(i);
 
+		int team_num_2 = priw.GetTeamNum2();
+		bool is_active_team = isActiveTeam(team_num_2);
+		if (!is_active_team && !forceChange) { return; }
+
 		CarWrapper car = priw.GetCar();
 		if (!car) { return; }
 
-		float car_size = getCarScale();
+		float car_size = getCarScale(team_num_2);
 		car.SetCarScale(car_size);
 
 		float mass = getMassByCarScale(car_size);
 		car.SetMass(mass);
-
-		//Debug Testing
-		//CVarWrapper massCvar = cvarManager->getCvar("car_size_mass");
-		//if (!massCvar) { return; }
-		//car.SetMass(massCvar.getFloatValue());
 	}
 }
 
-float CarSize::getCarScale() {
-	if (!isEnabled()) { return 1.0; };
+float CarSize::getCarScale(int team_num_2) {
 
-	CVarWrapper sizeCvar = cvarManager->getCvar("car_size_scale");
-	if (!sizeCvar) { return scale_default; }
+	if (team_num_2 == TEAM_NUM_BLUE) {
+		CVarWrapper sizeCvarBlue = cvarManager->getCvar("car_size_scale_blue");
+		if (!sizeCvarBlue) { return SCALE_DEFAULT; }
 
-	return sizeCvar.getFloatValue();
+		return sizeCvarBlue.getFloatValue();
+	} else if (team_num_2 == TEAM_NUM_ORANGE) {
+		CVarWrapper sizeCvarOrange = cvarManager->getCvar("car_size_scale_orange");
+		if (!sizeCvarOrange) { return SCALE_DEFAULT; }
+
+		return sizeCvarOrange.getFloatValue();
+	}
+
+	return SCALE_DEFAULT;
 }
 
 /*
@@ -174,11 +182,29 @@ float CarSize::getMassByCarScale(float car_size) {
 	return mass;
 }
 
-bool CarSize::isEnabled() {
-	CVarWrapper enableCvar = cvarManager->getCvar("car_size_enabled");
+bool CarSize::isEnabledBlue() {
+	CVarWrapper enableCvar = cvarManager->getCvar("car_size_enabled_blue");
 	if (!enableCvar) { return false; }
 
 	return enableCvar.getBoolValue();
+}
+
+bool CarSize::isEnabledOrange() {
+	CVarWrapper enableCvar = cvarManager->getCvar("car_size_enabled_orange");
+	if (!enableCvar) { return false; }
+
+	return enableCvar.getBoolValue();
+}
+
+bool CarSize::isActiveTeam(int team_num_2) {
+	if (team_num_2 == TEAM_NUM_BLUE && isEnabledBlue()) {
+		return true;
+	}
+	if (team_num_2 == TEAM_NUM_ORANGE && isEnabledOrange()) {
+		return true;
+	}
+
+	return false;
 }
 
 /*

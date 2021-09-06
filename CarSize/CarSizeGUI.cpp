@@ -11,53 +11,86 @@ std::string CarSize::GetPluginName() {
 
 void CarSize::RenderSettings() {
     //Text
-    ImGui::TextUnformatted("I would recommend a value between 0.3 and 2.2x inclusive. Outside that range the hitboxes are too messed up.");
+    ImGui::TextUnformatted("I would recommend a value between 0.8 and 1.6x inclusive. Outside that range the hitboxes and physics are sometimes messed up.");
 
+    renderWidgetsBlue();
+    ImGui::Separator();
+    renderWidgetsOrange();
+}
+
+void CarSize::renderWidgetsBlue() {
     //Enable Checkbox
-    CVarWrapper enableCvar = cvarManager->getCvar("car_size_enabled");
+    CVarWrapper enableCvar = cvarManager->getCvar("car_size_enabled_blue");
     if (!enableCvar) { return; }
 
-    bool enabled = enableCvar.getBoolValue();
-    if (ImGui::Checkbox("Enable plugin", &enabled)) {
-        enableCvar.setValue(enabled);
+    bool enabledBlue = enableCvar.getBoolValue();
+    if (ImGui::Checkbox("Enable plugin for blue", &enabledBlue)) {
+        enableCvar.setValue(enabledBlue);
         gameWrapper->Execute([this](GameWrapper* gw) {
             clickEnable();
         });
     }
     if (ImGui::IsItemHovered()) {
-        ImGui::SetTooltip("Toggle CarSize Plugin");
+        ImGui::SetTooltip("Toggle CarSize Plugin for blue");
     }
 
     //Size Slider
-    CVarWrapper sizeCvar = cvarManager->getCvar("car_size_scale");
+    CVarWrapper sizeCvar = cvarManager->getCvar("car_size_scale_blue");
     if (!sizeCvar) { return; }
 
-    float size = sizeCvar.getFloatValue();
-    if (ImGui::SliderFloat("Scale", &size, scale_min, scale_max, "%.1f")) {
-        sizeCvar.setValue(size);
+    float sizeBlue = sizeCvar.getFloatValue();
+    if (ImGui::SliderFloat("Scale for blue", &sizeBlue, SCALE_MIN, SCALE_MAX, "%.1f")) {
+        sizeCvar.setValue(sizeBlue);
     }
     if (ImGui::IsItemHovered()) {
-        std::string hoverText = "Scale is x" + std::to_string(size);
+        std::string hoverText = "Scale is x" + std::to_string(sizeBlue);
         ImGui::SetTooltip(hoverText.c_str());
     }
-
-    //TEST MASS SLIDER
-    /*CVarWrapper massCvar = cvarManager->getCvar("car_size_mass");
-    if (!massCvar) { return; }
-
-    float mass = massCvar.getFloatValue();
-    if (ImGui::SliderFloat("Mass (TEST)", &mass, 0, 1000.0)) {
-        massCvar.setValue(mass);
-    }
-    if (ImGui::IsItemHovered()) {
-        std::string hoverText = "Mass is " + std::to_string(mass);
-        ImGui::SetTooltip(hoverText.c_str());
-    }*/
 
     //Apply Button
-    if (ImGui::Button("Apply")) {
+    if (ImGui::Button("Apply for blue")) {
         gameWrapper->Execute([this](GameWrapper* gw) {
-            cvarManager->executeCommand("change_car_size");
+            cvarManager->executeCommand("change_car_size_blue");
+        });
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Apply configured settings");
+    }
+}
+
+void CarSize::renderWidgetsOrange() {
+    //Enable Checkbox
+    CVarWrapper enableCvar = cvarManager->getCvar("car_size_enabled_orange");
+    if (!enableCvar) { return; }
+
+    bool enabledOrange = enableCvar.getBoolValue();
+    if (ImGui::Checkbox("Enable plugin for orange", &enabledOrange)) {
+        enableCvar.setValue(enabledOrange);
+        gameWrapper->Execute([this](GameWrapper* gw) {
+            clickEnable();
+        });
+    }
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Toggle CarSize Plugin for orange");
+    }
+
+    //Size Slider
+    CVarWrapper sizeCvar = cvarManager->getCvar("car_size_scale_orange");
+    if (!sizeCvar) { return; }
+
+    float sizeOrange = sizeCvar.getFloatValue();
+    if (ImGui::SliderFloat("Scale for orange", &sizeOrange, SCALE_MIN, SCALE_MAX, "%.1f")) {
+        sizeCvar.setValue(sizeOrange);
+    }
+    if (ImGui::IsItemHovered()) {
+        std::string hoverText = "Scale is x" + std::to_string(sizeOrange);
+        ImGui::SetTooltip(hoverText.c_str());
+    }
+
+    //Apply Button
+    if (ImGui::Button("Apply for orange")) {
+        gameWrapper->Execute([this](GameWrapper* gw) {
+            cvarManager->executeCommand("change_car_size_orange");
         });
     }
     if (ImGui::IsItemHovered()) {

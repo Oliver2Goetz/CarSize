@@ -18,15 +18,21 @@ public:
 
 	void GameStart(std::string eventName);
 	void AddCar(std::string eventName);
-	
-	bool isEnabled();
-	void changeCarSize(bool forceChange = false);
-	float getCarScale();
-	float getMassByCarScale(float car_scale);
 
-	const float scale_min = 0.1;
-	const float scale_max = 5.0;
-	const float scale_default = 1.0;
+	bool isEnabledBlue();
+	bool isEnabledOrange();
+	bool isActiveTeam(int team_num_2);
+
+	void changeCarSize(bool forceChange = false);
+	float getCarScale(int team_num_2);
+	float getMassByCarScale(float car_scale);
+	
+	int TEAM_NUM_BLUE = 0;
+	int TEAM_NUM_ORANGE = 1;
+
+	const float SCALE_MIN = 0.1;
+	const float SCALE_MAX = 5.0;
+	const float SCALE_DEFAULT = 1.0;
 
 	void clickEnable();
 
@@ -35,4 +41,6 @@ public:
 	std::string GetPluginName() override;
 	void SetImGuiContext(uintptr_t ctx) override;
 
+	void renderWidgetsBlue();
+	void renderWidgetsOrange();
 };
